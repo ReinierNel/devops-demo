@@ -22,4 +22,4 @@ spec:
   tls:
   - hosts:
     - "argocd.devops-demo.reinier.co.za"
-    secretName: argocd-tls-secret
+    secretName: argocd-server-tls
