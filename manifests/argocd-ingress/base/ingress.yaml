@@ -5,7 +5,7 @@ metadata:
   namespace: argo-cd 
   annotations:
     cert-manager.io/issuer: argo-cd-letsencrypt
-    nginx.ingress.kubernetes.io/proxy-ssl-verify: Disabled
+    nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
 spec:
   ingressClassName: nginx
   rules:
