@@ -5,6 +5,7 @@ metadata:
   namespace: argo-cd 
   annotations:
     cert-manager.io/issuer: argo-cd-letsencrypt
+    nginx.ingress.kubernetes.io/proxy-ssl-verify: Disabled
 spec:
   ingressClassName: nginx
   rules:
@@ -17,7 +18,7 @@ spec:
           service:
             name: argo-cd-argocd-server
             port:
-              number: 80
+              number: 443
   tls:
   - hosts:
     - "argocd.devops-demo.reinier.co.za"
