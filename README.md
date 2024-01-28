@@ -11,7 +11,7 @@ This is a demo deployment that showcases the following
 
 |**Link**|**username**|**password**|
 |---|---|---|
-|[hame](https://game.devops-demo.reinier.co.za/)|||
+|[game](https://game.devops-demo.reinier.co.za/)|||
 |[argocd](https://argocd.devops-demo.reinier.co.za/)|admin|***|
 |[grafana](https://grafana.devops-demo.reinier.co.za/login)|admin|***|
 
