@@ -1,4 +1,4 @@
-# devops-dem
+# devops-demo
 
 This is a demo deployment that showcases the following
 
