@@ -18,5 +18,5 @@ jobs:
           RUN_IN_CI: true
           ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
           ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
-          AZ_TENANT_ID: ${{secrets.ARGOCD_PAT}}
+          AZ_TENANT_ID: ${{secrets.AZ_TENANT_ID}}
           ARGOCD_PAT: ${{secrets.ARGOCD_PAT}}
