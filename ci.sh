@@ -75,7 +75,7 @@ cat <<EOF
 EOF
 
 # Build and push Game
-docker build src/game -t "$CONTAINER_REGISTRY_URL/game:$TF_VAR_branch_name"
+docker build --platform=linux/amd64 src/game -t "$CONTAINER_REGISTRY_URL/game:$TF_VAR_branch_name"
 TOKEN=$(az acr login --name "$CONTAINER_REGISTRY_NAME" --expose-token --output tsv --query accessToken)
 docker login "$CONTAINER_REGISTRY_URL" --username 00000000-0000-0000-0000-000000000000 --password-stdin <<< "$TOKEN"
 docker push "$CONTAINER_REGISTRY_URL/game:$TF_VAR_branch_name"

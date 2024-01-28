@@ -4,58 +4,6 @@ resource "azurerm_resource_group" "this" {
   tags     = local.tags
 }
 
-resource "azurerm_role_assignment" "owner" {
-  for_each             = toset(local.deployment_users)
-  principal_id         = each.value
-  role_definition_name = "Owner"
-  scope                = azurerm_resource_group.this.id
-}
-
-module "akv" {
-  depends_on                = [azurerm_role_assignment.owner]
-  source                    = "../modules/key_vault"
-  name                      = local.simple_name
-  location                  = azurerm_resource_group.this.location
-  resource_group_name       = azurerm_resource_group.this.name
-  tenant_id                 = var.tenant_id
-  key_vault_crypto_officer  = toset(local.deployment_users)
-  key_vault_secrets_officer = toset(local.deployment_users)
-}
-
-resource "azurerm_key_vault_key" "aks" {
-  depends_on   = [module.akv]
-  name         = "aks-disk-encryption-key"
-  key_vault_id = module.akv.key_vault_id
-  key_type     = "RSA"
-  key_size     = 4096
-
-  key_opts = [
-    "decrypt",
-    "encrypt",
-    "sign",
-    "unwrapKey",
-    "verify",
-    "wrapKey",
-  ]
-}
-
-resource "azurerm_disk_encryption_set" "aks" {
-  depends_on          = [module.akv]
-  name                = local.simple_name
-  resource_group_name = azurerm_resource_group.this.name
-  location            = azurerm_resource_group.this.location
-  key_vault_key_id    = azurerm_key_vault_key.aks.id
-  identity {
-    type = "SystemAssigned"
-  }
-}
-
-resource "azurerm_role_assignment" "aks_disk_encryption_set" {
-  principal_id         = azurerm_disk_encryption_set.aks.identity[0].principal_id
-  role_definition_name = "Key Vault Crypto Officer"
-  scope                = module.akv.key_vault_id
-}
-
 resource "azurerm_dns_zone" "this" {
   name                = "${lookup(local.deployment_params, local.branch_slug, local.deployment_params.default).dns_zone_name}.${local.root_dns_zone}"
   resource_group_name = azurerm_resource_group.this.name
@@ -80,14 +28,12 @@ resource "azurerm_container_registry" "this" {
 }
 
 resource "azurerm_kubernetes_cluster" "this" {
-  depends_on                = [module.akv, azurerm_role_assignment.aks_disk_encryption_set]
   name                      = local.full_name
   location                  = azurerm_resource_group.this.location
   resource_group_name       = azurerm_resource_group.this.name
   dns_prefix                = local.simple_name
   workload_identity_enabled = true
   oidc_issuer_enabled       = true
-  disk_encryption_set_id    = azurerm_disk_encryption_set.aks.id
   node_resource_group       = "${local.full_name}-nodes"
 
   default_node_pool {
