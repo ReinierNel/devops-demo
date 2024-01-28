@@ -9,7 +9,7 @@ spec:
     server: https://kubernetes.default.svc
   project: default
   source:
-    path: manifests/argocd-ingress
+    path: manifests/argocd-ingress/base
     repoURL: https://github.com/ReinierNel/devops-demo.git
     targetRevision: main
   syncPolicy:
