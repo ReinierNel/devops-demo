@@ -44,6 +44,8 @@ this scripts executes the following in this order
 4. setup argocd repo using kubectl
 5. deploy argocd apps using kubectl
 
+Cd is handled by Argocd, it checks the manifests directory for changes on the main branch and deploys to same cluster its hosted in
+
 ## application (game)
 
 simple ultimate knots and crosses game built using the Godot frame work and exported to web (wasm)
