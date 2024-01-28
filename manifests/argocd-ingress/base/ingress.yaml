@@ -1,0 +1,24 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: argo-cd
+  namespace: argo-cd 
+  annotations:
+    cert-manager.io/issuer: argo-cd-letsencrypt
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: "argocd.devops-demo.reinier.co.za"
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: argo-cd-argocd-server
+            port:
+              number: 443
+  tls:
+  - hosts:
+    - "grafana.devops-demo.reinier.co.za"
+    secretName: grafana-tls-secret

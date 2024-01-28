@@ -96,3 +96,9 @@ cat manifests/argocd-project.yaml | sed 's/__ARGOCD_PAT__/'"$ARGOCD_PAT"'/g' | k
 
 echo "info deploying game"
 kubectl apply -f manifests/game/application.yaml
+
+echo "info deploying grafana ingress"
+kubectl apply -f manifests/grafana-ingress/application.yaml
+
+echo "info deploying argocd ingress"
+kubectl apply -f manifests/argocd-ingress/application.yaml

@@ -1,0 +1,19 @@
+apiVersion: cert-manager.io/v1
+kind: Issuer
+metadata:
+  name: grafana-letsencrypt
+  namespace: loki
+spec:
+  acme:
+    server: https://acme-v02.api.letsencrypt.org/directory
+    email: reiniernel89@gmail.com
+    privateKeySecretRef:
+      name: grafana-letsencrypt
+    solvers:
+    - http01:
+        ingress:
+          class: nginx
+          podTemplate:
+            spec:
+              nodeSelector:
+                "kubernetes.io/os": linux
