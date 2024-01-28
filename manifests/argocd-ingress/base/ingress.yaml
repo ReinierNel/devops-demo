@@ -20,5 +20,5 @@ spec:
               number: 80
   tls:
   - hosts:
-    - "grafana.devops-demo.reinier.co.za"
-    secretName: grafana-tls-secret
+    - "argocd.devops-demo.reinier.co.za"
+    secretName: argocd-tls-secret
