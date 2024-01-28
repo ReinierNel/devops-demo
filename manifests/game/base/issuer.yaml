@@ -1,0 +1,19 @@
+apiVersion: cert-manager.io/v1
+kind: Issuer
+metadata:
+  name: game-letsencrypt
+  namespace: game
+spec:
+  acme:
+    server: https://acme-v02.api.letsencrypt.org/directory
+    email: reiniernel89@gmail.com
+    privateKeySecretRef:
+      name: game-letsencrypt
+    solvers:
+    - http01:
+        ingress:
+          class: nginx
+          podTemplate:
+            spec:
+              nodeSelector:
+                "kubernetes.io/os": linux

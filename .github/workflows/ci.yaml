@@ -1,0 +1,22 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - "main"
+      - "feature/*"
+  workflow_dispatch:
+
+jobs:
+  script:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: CI Script
+        run: bash ./ci.sh
+        env:
+          RUN_IN_CI: true
+          ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
+          ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
+          AZ_TENANT_ID: ${{secrets.ARGOCD_PAT}}
+          ARGOCD_PAT: ${{secrets.ARGOCD_PAT}}
