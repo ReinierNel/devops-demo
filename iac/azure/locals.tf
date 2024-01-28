@@ -4,7 +4,7 @@ locals {
   simple_name                       = substr("${local.branch_slug}devopsdemo", 0, 23) # smaller name for resoruces that has naming restrictions
   root_dns_zone                     = "reinier.co.za"                                 # must be in the same subscriptions
   root_dns_zone_resoruce_group_name = "manual"
-  ci_sp_object_id                   = "2ad835e0-f658-4208-b207-73a2ff972ca4"
+  deployment_users                  = ["9ddeeb6e-4be6-44d0-af99-09bab6f1fad4", "2ad835e0-f658-4208-b207-73a2ff972ca4"]
   deployment_params = {
     main = {
       location                = "East US 2"

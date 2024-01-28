@@ -5,27 +5,21 @@ resource "azurerm_resource_group" "this" {
 }
 
 resource "azurerm_role_assignment" "owner" {
-  for_each = toset([
-    data.azurerm_client_config.current.object_id,
-  ])
+  for_each             = toset(local.deployment_users)
   principal_id         = each.value
   role_definition_name = "Owner"
   scope                = azurerm_resource_group.this.id
 }
 
 module "akv" {
-  depends_on          = [azurerm_role_assignment.owner]
-  source              = "../modules/key_vault"
-  name                = local.simple_name
-  location            = azurerm_resource_group.this.location
-  resource_group_name = azurerm_resource_group.this.name
-  tenant_id           = var.tenant_id
-  key_vault_crypto_officer = [
-    data.azurerm_client_config.current.object_id,
-  ]
-  key_vault_secrets_officer = [
-    data.azurerm_client_config.current.object_id,
-  ]
+  depends_on                = [azurerm_role_assignment.owner]
+  source                    = "../modules/key_vault"
+  name                      = local.simple_name
+  location                  = azurerm_resource_group.this.location
+  resource_group_name       = azurerm_resource_group.this.name
+  tenant_id                 = var.tenant_id
+  key_vault_crypto_officer  = toset(local.deployment_users)
+  key_vault_secrets_officer = toset(local.deployment_users)
 }
 
 resource "azurerm_key_vault_key" "aks" {
