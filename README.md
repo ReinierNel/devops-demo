@@ -29,7 +29,7 @@ This is a demo deployment that showcases the following
 |
 |-> src/folder # source code and docker files
 |
-|-> ci.sh # bash script that contains all the ci instructions can alls be ran locale
+|-> ci.sh # bash script that contains all the ci instructions, this can also be ran locally
 ```
 
 ## Ci-Cd
