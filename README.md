@@ -15,6 +15,8 @@ This is a demo deployment that showcases the following
 |[argocd](https://argocd.devops-demo.reinier.co.za/)|admin|***|
 |[grafana](https://grafana.devops-demo.reinier.co.za/login)|admin|***|
 
+> note that argocd and grafana uses its generated credentials this will be a short lived deploy for demonstration purposes.
+
 # Structure
 
 ```bash
@@ -51,3 +53,33 @@ Cd is handled by Argocd, it checks the manifests directory for changes on the ma
 simple ultimate knots and crosses game built using the Godot frame work and exported to web (wasm)
 
 see for details about the rules https://en.wikipedia.org/wiki/Ultimate_tic-tac-toe 
+
+## Future Improvements
+
+### Argocd
+
+SSO to Azure AD
+Create helm charts for apps so that Argocd can template them
+
+Install basic tempting tool like gomplate on argocd to replace values in manifests based on env vars or 
+
+### Kubernetes
+
+Install external secrets (can pull in secrets from a keyvault) (skipped to save some costs)
+
+Enable Workload identities (allows pods and other k8s resources to access azure resources based on role assistants)
+
+### Grafana
+
+Add Alets and triggers based on log and metrics events
+
+> Potentials swap out Loki-stack for pure azure container insights and azure log analytics
+
+### Github Actions
+
+Split single file into workflow with dependant steps
+
+Add Static code analysts, unit tests before build
+
+Add web test after deploy to verify services are running correctly 
+
