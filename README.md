@@ -42,9 +42,11 @@ this scripts executes the following in this order
 
 1. checks that dependencies is installed
 2. log into azure
-3. docker build and push apps in this case the game
-4. setup argocd repo using kubectl
-5. deploy argocd apps using kubectl
+3. check terraform code for issues
+4. deploy infrastructure via terraform
+5. docker build and push apps in this case the game
+6. setup argocd repo using kubectl
+7. deploy argocd apps using kubectl
 
 Cd is handled by Argocd, it checks the manifests directory for changes on the main branch and deploys to same cluster its hosted in
 
