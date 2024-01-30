@@ -47,9 +47,10 @@ resource "azurerm_kubernetes_cluster" "this" {
   # enabled this as tfsec failes ci see commeted code below
   api_server_authorized_ip_ranges = lookup(local.deployment_params, local.branch_slug, local.deployment_params.default).trusted_ip_addresses
 
-  api_server_access_profile {
-    authorized_ip_ranges = lookup(local.deployment_params, local.branch_slug, local.deployment_params.default).trusted_ip_addresses
-  }
+  # api_server_access_profile {
+  #   authorized_ip_ranges = lookup(local.deployment_params, local.branch_slug, local.deployment_params.default).trusted_ip_addresses
+  # }
+
   default_node_pool {
     name       = "default"
     node_count = lookup(local.deployment_params, local.branch_slug, local.deployment_params.default).default_node_pool_count

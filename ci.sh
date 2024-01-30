@@ -16,7 +16,7 @@ function install_tfsec() {
 }
 
 # check if required softare in installed
-dependencies=("jq" "git" "terraform" "kustomize" "kubectl" "docker" "tfsec")
+dependencies=("jq" "git" "terraform" "kustomize" "kubectl" "docker" "tfsec" "curl")
 
 for dependency in "${dependencies[@]}"; do
     if ! which "$dependency" >> /dev/null; then
@@ -55,6 +55,7 @@ fi
 TF_VAR_branch_name=$(git rev-parse --abbrev-ref HEAD)
 TF_VAR_tenant_id=$(az account list --query "[?isDefault].tenantId" --output tsv) # I only have one account can change isDefault to [?name=='name of subscription'].tenantId
 TF_VAR_subscription_id=$(az account list --query "[?isDefault].id" --output tsv) # I only have one account can change isDefault to [?name=='name of subscription'].id
+TF_VAR_ci_runner_public_ip=$(curl https://ifconfig.io)
 
 if [ -n "$ARGOCD_PAT" ]; then
     TF_VAR_github_pat="$ARGOCD_PAT"
@@ -63,6 +64,7 @@ fi
 export TF_VAR_branch_name
 export TF_VAR_tenant_id
 export TF_VAR_subscription_id
+export TF_VAR_ci_runner_public_ip
 
 
 cat <<EOF
@@ -73,6 +75,7 @@ cat <<EOF
 
 EOF
 
+# TF sec for security issues and terraform code issues
 tfsec iac/azure
 
 
