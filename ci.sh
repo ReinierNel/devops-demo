@@ -67,6 +67,11 @@ export TF_VAR_subscription_id
 export TF_VAR_ci_runner_public_ip
 
 
+# if test -f "$HOME/.kube/config"; then
+#     KUBE_CONFIG_PATH="$HOME/.kube/config"
+#     export KUBE_CONFIG_PATH
+# fi
+
 cat <<EOF
 
 ##################################################
@@ -86,6 +91,9 @@ cat <<EOF
 ##################################################
 
 EOF
+
+export TF_CLI_ARGS_plan="-compact-warnings"
+export TF_CLI_ARGS_apply="-compact-warnings"
 
 terraform -chdir=iac/azure init
 terraform -chdir=iac/azure apply --auto-approve;

@@ -12,10 +12,10 @@ variable "subscription_id" {
   sensitive = true
 }
 
-variable "github_pat" {
-  type      = string
-  sensitive = true
-}
+# variable "github_pat" {
+#   type      = string
+#   sensitive = true
+# }
 
 variable "ci_runner_public_ip" {
   type = string
