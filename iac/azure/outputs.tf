@@ -10,3 +10,8 @@ export AZ_TENANT_ID="e9a49ca6-aef5-4fe3-80b8-87b7406d5bf0"
 export AZ_DNS_ZONE_NAME="${lookup(local.deployment_params, local.branch_slug, local.deployment_params.default).dns_zone_name}.${local.root_dns_zone}"
 EOF
 }
+
+resource "local_file" "kubeconfig" {
+  filename = "${path.module}/kubeconfig"
+  content  = azurerm_kubernetes_cluster.this.kube_admin_config_raw
+}

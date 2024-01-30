@@ -127,11 +127,12 @@ cat <<EOF
 EOF
 
 echo "info setting up cluster config"
-az aks get-credentials --overwrite-existing --name "$AZ_AKS_CLUSTER_NAME" --resource-group "$AZ_AKS_CLUSTER_RESOURCE_GROUP_NAME" --format azure
+KUBECONFIG="$PWD/iac/azure/kubeconfig"
+export KUBECONFIG
 
-if [ -n "$RUN_IN_CI" ]; then
-    kubelogin convert-kubeconfig
-fi
+# if [ -n "$RUN_IN_CI" ]; then
+#     kubelogin convert-kubeconfig
+# fi
 
 echo "info setting up repo"
 cat manifests/argocd-project.yaml | sed 's/__ARGOCD_PAT__/'"$ARGOCD_PAT"'/g' | kubectl apply -f -

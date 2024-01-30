@@ -39,3 +39,5 @@ terraform.rc
 env.sh
 
 .env
+
+kubeconfig
