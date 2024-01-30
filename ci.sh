@@ -57,11 +57,20 @@ fi
 TF_VAR_branch_name=$(git rev-parse --abbrev-ref HEAD)
 TF_VAR_tenant_id=$(az account list --query "[?isDefault].tenantId" --output tsv) # I only have one account can change isDefault to [?name=='name of subscription'].tenantId
 TF_VAR_subscription_id=$(az account list --query "[?isDefault].id" --output tsv) # I only have one account can change isDefault to [?name=='name of subscription'].id
-TF_VAR_ci_runner_public_ip=$(curl https://ifconfig.io)
+TF_VAR_ci_runner_public_ip="$(curl https://ifconfig.io)/32"
+
 export TF_VAR_branch_name
 export TF_VAR_tenant_id
 export TF_VAR_subscription_id
 export TF_VAR_ci_runner_public_ip
+
+branch_slug=$(basename "$TF_VAR_branch_name")
+echo  "$branch_slug-devops-demo"
+if az aks update --resource-group "$branch_slug-devops-demo" --name "$branch_slug-devops-demo" --subscription "$TF_VAR_subscription_id" --api-server-authorized-ip-ranges  "165.255.240.143/32, $TF_VAR_ci_runner_public_ip"; then
+    echo "info added runners IP address to aks authorised ip range"
+else
+    echo "warn cluster may note exist yet or not found"
+fi
 
 cat <<EOF
 
