@@ -14,7 +14,7 @@ locals {
         notes = "cost 0.0416 in eastus2 @ 2024-01-27"
       }
       dns_zone_name = "devops-demo" # subdomain of root domain
-      trusted_ip_addresses = ["165.255.240.143/32", var.ci_runner_public_ip]
+      trusted_ip_addresses = ["165.255.240.143/32", "20.180.0.0/14"]
       admin_group_object_ids = ["3f6dfc8b-0758-4228-8ba0-846970d6531f"]
     }
     default = {
@@ -25,7 +25,7 @@ locals {
         notes = "cost 0.0246 in eastus2 @ 2024-01-27"
       }
       dns_zone_name = "${local.branch_slug}.devops-demo" # subdomain of root domain
-      trusted_ip_addresses = ["165.255.240.143/32", var.ci_runner_public_ip]
+      trusted_ip_addresses = ["165.255.240.143/32", "20.180.0.0/14"]
       admin_group_object_ids = ["3f6dfc8b-0758-4228-8ba0-846970d6531f"]
     }
   }

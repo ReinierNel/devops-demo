@@ -17,8 +17,8 @@ variable "subscription_id" {
 #   sensitive = true
 # }
 
-variable "ci_runner_public_ip" {
-  type = string
-  description = "The public IP address of the ci runner needed to deploy manifests"
-  default = ""
-}
+# variable "ci_runner_public_ip" {
+#   type = string
+#   description = "The public IP address of the ci runner needed to deploy manifests"
+#   default = ""
+# }
