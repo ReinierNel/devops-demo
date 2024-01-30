@@ -127,7 +127,7 @@ cat <<EOF
 EOF
 
 echo "info setting up cluster config"
-az aks get-credentials --overwrite-existing --name "$AZ_AKS_CLUSTER_NAME" --resource-group "$AZ_AKS_CLUSTER_RESOURCE_GROUP_NAME" #--format azure
+az aks get-credentials --overwrite-existing --name "$AZ_AKS_CLUSTER_NAME" --resource-group "$AZ_AKS_CLUSTER_RESOURCE_GROUP_NAME" --format azure
 
 if [ -n "$RUN_IN_CI" ]; then
     kubelogin convert-kubeconfig
