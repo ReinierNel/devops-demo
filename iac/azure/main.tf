@@ -73,21 +73,6 @@ resource "azurerm_kubernetes_cluster" "this" {
     network_policy = "azure"
   }
 
-  ingress_application_gateway {
-          effective_gateway_id                 = "/subscriptions/42fac477-e696-455c-af82-524aeaad005d/resourceGroups/main-devops-demo-nodes/providers/Microsoft.Network/applicationGateways/ingress-appgateway"
-          gateway_name                         = "ingress-appgateway"
-          ingress_application_gateway_identity = [
-              {
-                  client_id                 = "d933a843-1b8c-43cb-93f3-5ae668a64c17"
-                  object_id                 = "5a58fe67-b03c-4d3c-8897-2b26c8a59f97"
-                  user_assigned_identity_id = "/subscriptions/42fac477-e696-455c-af82-524aeaad005d/resourcegroups/main-devops-demo-nodes/providers/Microsoft.ManagedIdentity/userAssignedIdentities/ingressapplicationgateway-main-devops-demo"
-                }
-            ]
-        }
-
-        # (8 unchanged blocks hidden)
-    }
-   
   oms_agent {
     log_analytics_workspace_id = azurerm_log_analytics_workspace.this.id
   }  
@@ -122,7 +107,7 @@ resource "null_resource" "wait" {
 }
 
 resource "azurerm_public_ip" "this" {
-  depends_on          = [null_resource.wait]
+  depends_on = [ null_resource.wait ]
   name                = local.simple_name
   resource_group_name = "${azurerm_resource_group.this.name}-nodes"
   location            = azurerm_resource_group.this.location
@@ -165,7 +150,6 @@ resource "helm_release" "nginx_ingress" {
 }
 
 resource "helm_release" "cert_manager" {
-  depends_on       = [helm_release.nginx_ingress]
   name             = "cert-manager"
   repository       = "https://charts.jetstack.io"
   chart            = "cert-manager"

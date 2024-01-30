@@ -63,12 +63,6 @@ export TF_VAR_tenant_id
 export TF_VAR_subscription_id
 export TF_VAR_ci_runner_public_ip
 
-
-# if test -f "$HOME/.kube/config"; then
-#     KUBE_CONFIG_PATH="$HOME/.kube/config"
-#     export KUBE_CONFIG_PATH
-# fi
-
 cat <<EOF
 
 ##################################################
