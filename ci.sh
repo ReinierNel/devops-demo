@@ -11,13 +11,25 @@ cat <<EOF
 
 EOF
 
+function install_tfsec() {
+    curl -s https://raw.githubusercontent.com/aquasecurity/tfsec/master/scripts/install_linux.sh | bash
+}
+
 # check if required softare in installed
-dependencies=("jq" "git" "terraform" "kustomize" "kubectl" "docker")
+dependencies=("jq" "git" "terraform" "kustomize" "kubectl" "docker" "tfsec")
 
 for dependency in "${dependencies[@]}"; do
     if ! which "$dependency" >> /dev/null; then
-        echo "error $dependency not installed, install it before continuing"
-        exit 1
+        
+        case "$dependency" in
+            tfsec)
+                install_tfsec
+            ;;
+            *)
+                echo "error $dependency not installed, and no install function available please install before continuing"
+                exit 1
+            ;;
+        esac
     else
         echo "info $dependency installed"
     fi
@@ -51,6 +63,17 @@ fi
 export TF_VAR_branch_name
 export TF_VAR_tenant_id
 export TF_VAR_subscription_id
+
+
+cat <<EOF
+
+##################################################
+# Tests and Analyze Code
+##################################################
+
+EOF
+
+tfsec /iac/azure
 
 
 cat <<EOF
