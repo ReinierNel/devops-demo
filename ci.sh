@@ -45,7 +45,7 @@ TF_VAR_tenant_id=$(az account list --query "[?isDefault].tenantId" --output tsv)
 TF_VAR_subscription_id=$(az account list --query "[?isDefault].id" --output tsv) # I only have one account can change isDefault to [?name=='name of subscription'].id
 
 if [ -n "$ARGOCD_PAT" ]; then
-    TF_VAR_github_pat="$ARGOCD_PAT" #"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"
+    TF_VAR_github_pat="$ARGOCD_PAT"
     export TF_VAR_github_pat
 fi
 export TF_VAR_branch_name

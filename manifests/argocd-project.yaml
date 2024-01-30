@@ -6,6 +6,6 @@ metadata:
   labels:
     argocd.argoproj.io/secret-type: repository
 stringData:
-  url: https://github.com/ReinierNel/devops-demo
+  url: https://github.com/ReinierNel/devops-demo.git
   # password: __ARGOCD_PAT__
   # username: argocd
