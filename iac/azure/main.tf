@@ -101,6 +101,10 @@ resource "azurerm_role_assignment" "network" {
 
 resource "null_resource" "wait" {
   depends_on = [azurerm_kubernetes_cluster.this]
+
+  triggers = {
+    ip_changed = var.ci_runner_public_ip
+  }
   provisioner "local-exec" {
     command = "sleep 60"
   }
@@ -133,7 +137,7 @@ resource "azurerm_dns_a_record" "wildcard" {
 }
 
 resource "helm_release" "nginx_ingress" {
-  depends_on       = [azurerm_public_ip.this, azurerm_kubernetes_cluster.this]
+  depends_on       = [azurerm_public_ip.this, azurerm_kubernetes_cluster.this, null_resource.wait]
   name             = "ingress-nginx"
   repository       = "https://kubernetes.github.io/ingress-nginx"
   chart            = "ingress-nginx"
@@ -150,7 +154,7 @@ resource "helm_release" "nginx_ingress" {
 }
 
 resource "helm_release" "cert_manager" {
-  depends_on       = [azurerm_kubernetes_cluster.this]
+  depends_on       = [azurerm_kubernetes_cluster.this, null_resource.wait]
   name             = "cert-manager"
   repository       = "https://charts.jetstack.io"
   chart            = "cert-manager"
@@ -168,7 +172,7 @@ resource "helm_release" "cert_manager" {
 
 
 resource "helm_release" "loki_stack" {
-  depends_on       = [azurerm_kubernetes_cluster.this]
+  depends_on       = [azurerm_kubernetes_cluster.this, null_resource.wait]
   name             = "loki"
   repository       = "https://grafana.github.io/helm-charts"
   chart            = "loki-stack"
@@ -185,7 +189,7 @@ resource "helm_release" "loki_stack" {
 }
 
 resource "helm_release" "argocd" {
-  depends_on       = [azurerm_kubernetes_cluster.this]
+  depends_on       = [azurerm_kubernetes_cluster.this, null_resource.wait]
   name             = "argo-cd"
   repository       = "https://argoproj.github.io/argo-helm"
   chart            = "argo-cd"
