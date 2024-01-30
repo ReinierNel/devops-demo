@@ -49,8 +49,8 @@ EOF
 if [ -n "$RUN_IN_CI" ]; then
     echo "info running in ci using azure service principal"
     az login --service-principal -u "$ARM_CLIENT_ID" -p "$ARM_CLIENT_SECRET" --tenant "$AZ_TENANT_ID"
-    curl -LO https://github.com/Azure/kubelogin/releases/download/v0.1.0/kubelogin-darwin-amd64.zip
-    unzip kubelogin-darwin-amd64.zip
+    curl -LO https://github.com/Azure/kubelogin/releases/download/v0.1.0/kubelogin-linux-amd64.zip
+    unzip kubelogin-linux-amd64.zip
     sudo mv bin/linux_amd64/kubelogin /usr/local/bin
     chmod +x /usr/local/bin/kubelogin
 else
