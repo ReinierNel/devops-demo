@@ -133,7 +133,7 @@ resource "azurerm_dns_a_record" "wildcard" {
 }
 
 resource "helm_release" "nginx_ingress" {
-  depends_on       = [azurerm_public_ip.this]
+  depends_on       = [azurerm_public_ip.this, azurerm_kubernetes_cluster.this]
   name             = "ingress-nginx"
   repository       = "https://kubernetes.github.io/ingress-nginx"
   chart            = "ingress-nginx"
@@ -150,6 +150,7 @@ resource "helm_release" "nginx_ingress" {
 }
 
 resource "helm_release" "cert_manager" {
+  depends_on       = [azurerm_kubernetes_cluster.this]
   name             = "cert-manager"
   repository       = "https://charts.jetstack.io"
   chart            = "cert-manager"
@@ -167,6 +168,7 @@ resource "helm_release" "cert_manager" {
 
 
 resource "helm_release" "loki_stack" {
+  depends_on       = [azurerm_kubernetes_cluster.this]
   name             = "loki"
   repository       = "https://grafana.github.io/helm-charts"
   chart            = "loki-stack"
@@ -183,6 +185,7 @@ resource "helm_release" "loki_stack" {
 }
 
 resource "helm_release" "argocd" {
+  depends_on       = [azurerm_kubernetes_cluster.this]
   name             = "argo-cd"
   repository       = "https://argoproj.github.io/argo-helm"
   chart            = "argo-cd"
