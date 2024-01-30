@@ -73,7 +73,7 @@ cat <<EOF
 
 EOF
 
-tfsec /iac/azure
+tfsec iac/azure
 
 
 cat <<EOF
