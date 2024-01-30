@@ -27,6 +27,14 @@ resource "azurerm_container_registry" "this" {
   admin_enabled       = false
 }
 
+resource "azurerm_log_analytics_workspace" "this" {
+  name                = local.full_name
+  location            = azurerm_resource_group.this.location
+  resource_group_name = azurerm_resource_group.this.name
+  sku                 = "PerGB2018"
+  retention_in_days   = 7
+}
+
 resource "azurerm_kubernetes_cluster" "this" {
   name                      = local.full_name
   location                  = azurerm_resource_group.this.location
@@ -36,6 +44,12 @@ resource "azurerm_kubernetes_cluster" "this" {
   oidc_issuer_enabled       = true
   node_resource_group       = "${local.full_name}-nodes"
 
+  # enabled this as tfsec failes ci see commeted code below
+  api_server_authorized_ip_ranges = lookup(local.deployment_params, local.branch_slug, local.deployment_params.default).trusted_ip_addresses
+
+  api_server_access_profile {
+    authorized_ip_ranges = lookup(local.deployment_params, local.branch_slug, local.deployment_params.default).trusted_ip_addresses
+  }
   default_node_pool {
     name       = "default"
     node_count = lookup(local.deployment_params, local.branch_slug, local.deployment_params.default).default_node_pool_count
@@ -45,6 +59,22 @@ resource "azurerm_kubernetes_cluster" "this" {
   identity {
     type = "SystemAssigned"
   }
+
+
+  azure_active_directory_role_based_access_control {
+    managed = true
+    admin_group_object_ids = lookup(local.deployment_params, local.branch_slug, local.deployment_params.default).admin_group_object_ids
+    azure_rbac_enabled = true
+  }
+
+  network_profile {
+    network_plugin  = "azure" 
+    network_policy = "azure"
+  }
+   
+  oms_agent {
+    log_analytics_workspace_id = azurerm_log_analytics_workspace.this.id
+  }  
 }
 
 resource "azurerm_role_assignment" "acrpull" {
