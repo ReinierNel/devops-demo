@@ -49,6 +49,10 @@ EOF
 if [ -n "$RUN_IN_CI" ]; then
     echo "info running in ci using azure service principal"
     az login --service-principal -u "$ARM_CLIENT_ID" -p "$ARM_CLIENT_SECRET" --tenant "$AZ_TENANT_ID"
+    curl -LO https://github.com/Azure/kubelogin/releases/download/v0.1.0/kubelogin-linux-arm64.zip
+    unzip kubelogin-linux-arm64.zip
+    sudo mv bin/linux_arm64/kubelogin /usr/local/bin
+    chmod +x /usr/local/bin/kubelogin
 else
     echo "info not runnign in ci using local az session"
 fi
@@ -123,7 +127,11 @@ cat <<EOF
 EOF
 
 echo "info setting up cluster config"
-az aks get-credentials --overwrite-existing --name "$AZ_AKS_CLUSTER_NAME" --resource-group "$AZ_AKS_CLUSTER_RESOURCE_GROUP_NAME"
+az aks get-credentials --overwrite-existing --name "$AZ_AKS_CLUSTER_NAME" --resource-group "$AZ_AKS_CLUSTER_RESOURCE_GROUP_NAME" #--format azure
+
+if [ -n "$RUN_IN_CI" ]; then
+    kubelogin convert-kubeconfig
+fi
 
 echo "info setting up repo"
 cat manifests/argocd-project.yaml | sed 's/__ARGOCD_PAT__/'"$ARGOCD_PAT"'/g' | kubectl apply -f -
