@@ -130,10 +130,6 @@ echo "info setting up cluster config"
 KUBECONFIG="$PWD/iac/azure/kubeconfig"
 export KUBECONFIG
 
-# if [ -n "$RUN_IN_CI" ]; then
-#     kubelogin convert-kubeconfig
-# fi
-
 echo "info setting up repo"
 cat manifests/argocd-project.yaml | sed 's/__ARGOCD_PAT__/'"$ARGOCD_PAT"'/g' | kubectl apply -f -
 
