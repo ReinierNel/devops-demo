@@ -84,4 +84,3 @@ Split single file into workflow with dependant steps
 Add Static code analysts, unit tests before build
 
 Add web test after deploy to verify services are running correctly 
-
