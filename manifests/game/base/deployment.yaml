@@ -18,7 +18,7 @@ spec:
     spec:
       containers:
       - name: game
-        image: "maindevopsdemo.azurecr.io/game:main"
+        image: "maindevopsdemo.azurecr.io/game@sha256:f080c9a924b4a4df04ff7b8c5576acea5308749c8c2ef73317a4434a0f4e9443"
         ports:
         - name: http
           containerPort: 80
