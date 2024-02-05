@@ -6,7 +6,6 @@ metadata:
   labels:
     app: game
 spec:
-  imagePullPolicy: Always
   replicas: 1
   selector:
     matchLabels:
@@ -22,3 +21,4 @@ spec:
         ports:
         - name: http
           containerPort: 80
+        imagePullPolicy: Always
